@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    RED.nodes.registerType('recorder', {
+        category: 'rtmp',
+        color: '#00cbfff9',
+        defaults: {
+            name: { value: '' },
+            rtmpUrl: { value: '' },
+            rtmpKey: { value: '' },
+            outputPath: { value: '' }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-podcast",
+        label: function() {
+            return this.name || 'recorder';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="recorder">
+    <div class="form-row">
+        <label for="node-input-name">Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-rtmpUrl">RTMP URL</label>
+        <input type="text" id="node-input-rtmpUrl" placeholder="rtmp://server/live">
+    </div>
+    <div class="form-row">
+        <label for="node-input-rtmpKey">RTMP KEY</label>
+        <input type="text" id="node-input-rtmpKey" placeholder="stream_key">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-outputPath">Output File Path</label>
+        <input type="text" id="node-input-outputPath" placeholder="/path/to/output/file.mp4">
+    </div>
+</script>

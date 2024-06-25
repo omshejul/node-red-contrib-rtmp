@@ -6,6 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bugs": {
+    "url": "https://github.com/omshejul/node-red-contrib-rtmp/issues"
+  },
+  "homepage": "https://github.com/omshejul/node-red-contrib-rtmp#readme",
   "author": "Om Shejul",
   "license": "MIT",
   "dependencies": {
@@ -13,8 +17,12 @@
     "fluent-ffmpeg": "^2.1.2"
   },
   "node-red": {
+    "version": ">=1.0.0",
     "nodes": {
       "rtmp": "nodes/rtmp.js"
+    },
+    "engines": {
+      "node": ">=14.0.0"
     }
   },
   "keywords": [

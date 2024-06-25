@@ -39,6 +39,7 @@ module.exports = function (RED) {
         .output(outputPath)
         .on("start", function (commandLine) {
           node.log("FFmpeg started with command: " + commandLine);
+          node.status({ fill: "green", shape: "dot", text: "recording" });
         })
         .on("error", function (err) {
           node.error("An error occurred: " + err.message);

@@ -15,7 +15,7 @@ module.exports = function (RED) {
       const outputPath = config.outputPath || msg.outputPath;
 
       if (!rtmpUrl || !rtmpKey || !outputPath) {
-        node.error("RTMP URL,KEY and output file path are required.");
+        node.error("RTMP URL, KEY, and output file path are required.");
         return;
       }
 
@@ -24,6 +24,7 @@ module.exports = function (RED) {
           node.log("Stopping FFmpeg process...");
           ffmpegProcess.on("exit", () => {
             node.log("FFmpeg recording stopped.");
+            node.status({});
             ffmpegProcess = null;
             isRecording = false;
           });
@@ -45,9 +46,11 @@ module.exports = function (RED) {
         .on("start", function (commandLine) {
           node.log("FFmpeg started with command: " + commandLine);
           node.status({ fill: "green", shape: "dot", text: "recording" });
+          isRecording = true;
         })
         .on("error", function (err) {
           node.error("An error occurred: " + err.message);
+          node.status({});
           ffmpegProcess = null;
           isRecording = false;
         })

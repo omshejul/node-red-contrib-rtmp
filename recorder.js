@@ -6,6 +6,7 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     const node = this;
     let ffmpegProcess = null;
+    let isRecording = false;
 
     node.on("input", function (msg) {
       const rtmpKey = config.rtmpKey || msg.rtmpKey;
@@ -19,17 +20,21 @@ module.exports = function (RED) {
       }
 
       if (msg.payload === "stop") {
-        if (ffmpegProcess) {
+        if (ffmpegProcess && isRecording) {
           node.log("Stopping FFmpeg process...");
+          ffmpegProcess.on("exit", () => {
+            node.log("FFmpeg recording stopped.");
+            ffmpegProcess = null;
+            isRecording = false;
+          });
           ffmpegProcess.kill("SIGINT");
-          ffmpegProcess = null;
         } else {
           node.warn("No recording to stop.");
         }
         return;
       }
 
-      if (ffmpegProcess) {
+      if (isRecording) {
         node.warn("Recording already in progress.");
         return;
       }
@@ -44,22 +49,22 @@ module.exports = function (RED) {
         .on("error", function (err) {
           node.error("An error occurred: " + err.message);
           ffmpegProcess = null;
+          isRecording = false;
         })
         .on("end", function () {
           node.log("FFmpeg finished recording.");
+          node.status({});
           ffmpegProcess = null;
+          isRecording = false;
         })
         .run();
     });
 
     node.on("close", function (done) {
-      if (ffmpegProcess) {
-        ffmpegProcess.on("end", () => {
+      if (ffmpegProcess && isRecording) {
+        ffmpegProcess.on("exit", () => {
           ffmpegProcess = null;
-          done();
-        });
-        ffmpegProcess.on("error", () => {
-          ffmpegProcess = null;
+          isRecording = false;
           done();
         });
         ffmpegProcess.kill("SIGINT");

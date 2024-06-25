@@ -1,0 +1,32 @@
+<script type="text/javascript">
+    RED.nodes.registerType('rtmp', {
+        category: 'function',
+        color: '#00cbfff9',
+        defaults: {
+            name: { value: '' },
+            input: { value: '' },
+            rtmpUrl: { value: '' }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'logo.png',
+        label: function() {
+            return this.name || 'rtmp';
+        }
+    });
+</script>
+
+<div class="form-row">
+    <label for="node-input-name">Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+</div>
+
+<div class="form-row">
+    <label for="node-input-input">Input File</label>
+    <input type="text" id="node-input-input" placeholder="/path/to/input">
+</div>
+
+<div class="form-row">
+    <label for="node-input-rtmpUrl">RTMP URL</label>
+    <input type="text" id="node-input-rtmpUrl" placeholder="rtmp://server/live/stream_key">
+</div>
